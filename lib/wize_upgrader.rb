@@ -58,7 +58,9 @@ module Wize
 
     def install_rspec
       `cd #{ @new_name }`
+      `bundle install`
       `rails g rspec:install`
+      `cd ..`
     end
 
     def attr_accessibles
