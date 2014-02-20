@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'wize_upgrader'
+
+if ARGV[0]
+  old_app_name = ARGV[0]
+else
+  print "\nPlease enter filename for old app: "
+  old_app_name = gets.chomp
+end
+
+Wize::Upgrader.new(old_app_name).upgrade

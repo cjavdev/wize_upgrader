@@ -6,7 +6,8 @@ Gem::Specification.new do |s|
   s.description = 'Simple upgrade by copying over files and folders'
   s.authors     = ['CJ Avilla']
   s.email       = 'cjavilla@gmail.com'
-  s.files       = ['lib/upgrader.rb']
-  s.homepage    = 'http://rubygems.org/gems/wize_upgrader'
+  s.executables = ['wize_upgrader']
+  s.files       = ['lib/wize_upgrader.rb']
+  s.homepage    = 'https://github.com/w1zeman1p/wize_upgrader'
   s.license     = 'MIT'
 end
