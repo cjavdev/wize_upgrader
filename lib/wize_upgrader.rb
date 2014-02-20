@@ -8,6 +8,7 @@ module Wize
       "app" => "app",
       "script" => "bin",
       "db" => "db",
+      "spec" => "spec",
       "vendor" => "vendor"
     }
     HARD_DIR_MAPPINGS = {
