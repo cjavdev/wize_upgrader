@@ -6,7 +6,6 @@ module Wize
   class Upgrader
     SOFT_DIR_MAPPINGS = {
       ".git" => ".git",
-      "app" => "app",
       "script" => "bin",
       "db" => "db",
       "lib" => "lib",
@@ -14,6 +13,7 @@ module Wize
       "vendor" => "vendor"
     }
     HARD_DIR_MAPPINGS = {
+      "app" => "app",
       "config/locales" => "config/locales",
       "config/initializers" => "config/initializers"
     }
@@ -169,8 +169,9 @@ end
     def unusual_gems(gemfile)
       old_gems = File.readlines(gemfile)
       old_gems.select! do |gem|
-        gem.start_with?("gem") && !COMMON_GEMS.include?(gem.chomp)
+        gem.strip.start_with?("gem") && !COMMON_GEMS.include?(gem.chomp)
       end
+      puts "CHECK THE GEM GROUPS!!"
       puts "Special gems: "
       old_gems
     end
