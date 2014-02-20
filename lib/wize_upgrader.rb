@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'active_support/inflector'
+require 'debugger'
 
 module Wize
   class Upgrader
@@ -31,7 +32,8 @@ module Wize
     COMMON_FILES = [
       "config/application.yml",
       "config/database.yml",
-      "config/routes.rb"
+      "config/routes.rb",
+      "README.md"
     ]
 
     def initialize(old_app_name)
@@ -131,17 +133,17 @@ module Wize
 
     def files_for(dir)
       puts "Files for: #{ dir }"
-      p [].tap do |files|
-        Dir.foreach(dir) do |node|
-          next if node.start_with?(".")
-          files << node if node.end_with?(".rb")
-          if File.directory?("#{ dir }/#{ node }")
-            sub_files = files_for("#{ dir }/#{ node }")
-            sub_files.map! { |f| "#{ node }/#{ f }" }
-            files += sub_files
-          end
+      files = []
+      Dir.foreach(dir) do |node|
+        next if node.start_with?(".")
+        files << node if node.end_with?(".rb")
+        if File.directory?("#{ dir }/#{ node }")
+          sub_files = files_for("#{ dir }/#{ node }")
+          sub_files.map! { |f| "#{ node }/#{ f }" }
+          files += sub_files
         end
       end
+      p files
     end
 
     def downgrade
@@ -178,6 +180,7 @@ end
       `rails new #{ app_name } -T`
       puts "Renaming #{ app_name } to #{ @new_name }"
       `mv #{ app_name } #{ @new_name }`
+      `rm #{ @new_name }/README.rdoc`
     end
 
     def rename_old
