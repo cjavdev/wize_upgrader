@@ -8,6 +8,7 @@ module Wize
       "app" => "app",
       "script" => "bin",
       "db" => "db",
+      "lib" => "lib",
       "spec" => "spec",
       "vendor" => "vendor"
     }
@@ -48,8 +49,11 @@ module Wize
         install_rspec
         copy_common_dirs
         copy_special_files
+        fix_models
+        fix_controllers
       rescue => e
         puts e.message
+        puts e.backtrace
         puts "something went wrong!"
       ensure
       end
@@ -72,6 +76,7 @@ module Wize
     end
 
     def fix_controller(file)
+      puts "fixing #{ file }"
       model = File.basename(file).gsub("_controller.rb", "").singularize
       return if attr_accessibles[model].empty?
 
@@ -103,11 +108,12 @@ module Wize
     end
 
     def fix_model(file)
+      lower_model = file.gsub(".rb", "")
+      puts "fixing #{ lower_model }"
       File.open("#{ @new_name }/app/models/#{ file }", "r") do |old|
         File.open("#{ @new_name }/app/models/#{ file }.tmp", "w") do |n|
           old.each_line do |line|
             if line.strip.start_with?("attr_accessible")
-              lower_model = file.gsub(".rb", "")
               attr_accessibles[lower_model] += line
                 .strip
                 .gsub("attr_accessible", "")
@@ -119,11 +125,13 @@ module Wize
           end
         end
       end
+      puts "Found attr_accessible #{ attr_accessibles[lower_model].join(", ") }"
       `mv #{ @new_name }/app/models/#{ file }.tmp #{ @new_name }/app/models/#{ file }`
     end
 
     def files_for(dir)
-      [].tap do |files|
+      puts "Files for: #{ dir }"
+      p [].tap do |files|
         Dir.foreach(dir) do |node|
           next if node.start_with?(".")
           files << node if node.end_with?(".rb")
@@ -166,11 +174,23 @@ end
     end
 
     def rails_gen_new
-      `rails new #{ @new_name } -T`
+      puts "Generating new rails app <#{ app_name }>"
+      `rails new #{ app_name } -T`
+      puts "Renaming #{ app_name } to #{ @new_name }"
+      `mv #{ app_name } #{ @new_name }`
     end
 
     def rename_old
+      puts "Renaming #{ @new_name } to #{ @old_name }"
       `mv #{ @new_name } #{ @old_name }`
+    end
+
+    def app_name
+      @app_name ||= begin
+        lines = File.readlines("#{ @old_name }/config/application.rb")
+        lines.select! { |l| l.start_with?("module") }
+        lines.first.gsub("module", "").strip
+      end
     end
 
     def copy_common_dirs
