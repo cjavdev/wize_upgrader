@@ -49,8 +49,8 @@ module Wize
         puts e.message
         puts "something went wrong!"
       ensure
-        downgrade
       end
+      puts "------    DONE UPGRADING! HAVE FUN    ------"
     end
 
     def attr_accessibles
@@ -151,9 +151,7 @@ module Wize
 
     def rails_gen_new
       `rails new #{ @new_name } -T`
-      `cd #{ @new_name }`
-      `mkdir .git`
-      `cd ..`
+      `mkdir #{ @new_name }/.git`
     end
 
     def rename_old
