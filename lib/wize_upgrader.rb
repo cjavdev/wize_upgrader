@@ -167,7 +167,6 @@ end
 
     def rails_gen_new
       `rails new #{ @new_name } -T`
-      `mkdir #{ @new_name }/.git`
     end
 
     def rename_old
@@ -176,11 +175,19 @@ end
 
     def copy_common_dirs
       SOFT_DIR_MAPPINGS.each do |src, dest|
-        `cp -rn #{ @old_name }/#{ src }/* #{ @new_name }/#{ dest }/`
+        if Dir.exists?("#{ @new_name }/#{ dest }")
+          `cp -rn #{ @old_name }/#{ src }/* #{ @new_name }/#{ dest }/`
+        else
+          `cp -r #{ @old_name }/#{ src } #{ @new_name }`
+        end
       end
       HARD_DIR_MAPPINGS.each do |src, dest|
         next if src.include?("wrap_parameters")
-        `cp -r #{ @old_name }/#{ src }/* #{ @new_name }/#{ dest }/`
+        if Dir.exists?("#{ @new_name }/#{ dest }")
+          `cp -r #{ @old_name }/#{ src }/* #{ @new_name }/#{ dest }/`
+        else
+          `cp -r #{ @old_name }/#{ src } #{ @new_name }`
+        end
       end
     end
 
