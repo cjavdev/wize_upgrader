@@ -19,6 +19,7 @@ module Wize
       "gem 'jquery-rails'",
       "gem 'pg'",
       "gem 'sqlite3'",
+      "gem 'rspec-rails'",
       "gem 'rails', '3.2.10'",
       "gem 'rails', '3.2.11'",
       "gem 'rails', '3.2.12'",
@@ -43,15 +44,21 @@ module Wize
       begin
         rename_old
         rails_gen_new
+        upgrade_gemfile("#{ @old_name }/Gemfile", "#{ @new_name }/Gemfile")
+        install_rspec
         copy_common_dirs
         copy_special_files
-        upgrade_gemfile("#{ @old_name }/Gemfile", "#{ @new_name }/Gemfile")
       rescue => e
         puts e.message
         puts "something went wrong!"
       ensure
       end
       puts "------    DONE UPGRADING! HAVE FUN    ------"
+    end
+
+    def install_rspec
+      `cd #{ @new_name }`
+      `rails g rspec:install`
     end
 
     def attr_accessibles
@@ -138,6 +145,12 @@ module Wize
         unusual_gems(from).each do |gem|
           f.write(gem)
         end
+
+        f.write(<<-rb)
+group :development, :test do
+  gem 'rspec-rails'
+end
+        rb
       end
     end
 
