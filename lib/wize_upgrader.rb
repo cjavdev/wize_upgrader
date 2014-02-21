@@ -178,7 +178,7 @@ end
     def unusual_gems(gemfile)
       old_gems = File.readlines(gemfile)
       old_gems.select! do |gem|
-        gem.strip.start_with?("gem") && !COMMON_GEMS.include?(gem.chomp)
+        gem.strip.start_with?("gem") && !COMMON_GEMS.include?(gem.strip)
       end
       puts "CHECK THE GEM GROUPS!!"
       puts "Special gems: "
