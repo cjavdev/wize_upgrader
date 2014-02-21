@@ -19,8 +19,6 @@ module Wize
     }
     COMMON_GEMS = [
       "gem 'jquery-rails'",
-      "gem 'pg'",
-      "gem 'sqlite3'",
       "gem 'rspec-rails'",
       "gem 'rails', '3.2.10'",
       "gem 'rails', '3.2.11'",

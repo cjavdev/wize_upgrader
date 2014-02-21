@@ -34,6 +34,10 @@ $ wize_upgrader <rails_app_dir>
 +  removes references to attr_accessible in models
 +  uses attr_accessible list to create *_params method in related controllers
 
+## Assumptions / TODO
++  attr_accessible method calls are all one liners
++  does not maintain gem groups in Gemfile
+
 ## Requirements
 
 +   `fileutils`
