@@ -96,11 +96,11 @@ module Wize
       columns = attr_accessibles[model]
       params_block = <<-rb
 
-    private
-    def #{ model }_params
-      params.require(:#{ model }).permit(#{ columns.join(", ") })
-    end
-  rb
+  private
+  def #{ model }_params
+    params.require(:#{ model }).permit(#{ columns.join(", ") })
+  end
+rb
 
       # find last occurance of end and replace with params_block
       ctrlr = File.read("#{ @new_name }/app/controllers/#{ file }")
