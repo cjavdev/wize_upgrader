@@ -20,6 +20,10 @@ module Wize
     COMMON_GEMS = [
       "gem 'jquery-rails'",
       "gem 'rspec-rails'",
+      "gem 'coffee-rails', '~> 3.2.1'",
+      "gem 'sass-rails',   '~> 3.2.3'",
+      "gem 'uglifier', '>= 1.0.3'",
+      "gem 'sqlite3'",
       "gem 'rails', '3.2.10'",
       "gem 'rails', '3.2.11'",
       "gem 'rails', '3.2.12'",
@@ -51,6 +55,7 @@ module Wize
         copy_special_files
         fix_models
         fix_controllers
+        version_control
       rescue => e
         puts e.message
         puts e.backtrace
@@ -58,6 +63,12 @@ module Wize
       ensure
       end
       puts "------    DONE UPGRADING! HAVE FUN    ------"
+    end
+
+    def version_control
+      puts `git add -A`
+      `git commit -m "upgraded to rails 4 with wize_upgrader"`
+      puts `git push`
     end
 
     def install_rspec
