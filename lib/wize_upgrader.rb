@@ -66,11 +66,9 @@ module Wize
     end
 
     def version_control
-      `cd #{ @new_name }`
-      puts `git add -A`
-      `git commit -m "upgraded to rails 4 with wize_upgrader"`
-      puts `git push`
-      `cd ..`
+      puts `git --git-dir #{ @new_name }/.git add -A`
+      `git --git-dir #{ @new_name }/.git commit -m "upgraded to rails 4 with wize_upgrader"`
+      puts `git --git-dir #{ @new_name }/.git push`
     end
 
     def install_rspec
