@@ -66,9 +66,11 @@ module Wize
     end
 
     def version_control
+      `cd #{ @new_name }`
       puts `git add -A`
       `git commit -m "upgraded to rails 4 with wize_upgrader"`
       puts `git push`
+      `cd ..`
     end
 
     def install_rspec
@@ -187,7 +189,7 @@ end
 
     def rails_gen_new
       puts "Generating new rails app <#{ app_name }>"
-      `rails new #{ app_name } -T`
+      puts `rails new #{ app_name } -T`
       puts "Renaming #{ app_name } to #{ @new_name }"
       `mv #{ app_name } #{ @new_name }`
       `rm #{ @new_name }/README.rdoc`
