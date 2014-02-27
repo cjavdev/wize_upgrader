@@ -6,6 +6,7 @@ module Wize
   class Upgrader
     SOFT_DIR_MAPPINGS = {
       ".git" => ".git",
+      ".gitignore" => ".gitignore",
       "script" => "bin",
       "db" => "db",
       "lib" => "lib",
