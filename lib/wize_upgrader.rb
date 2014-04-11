@@ -47,7 +47,7 @@ module Wize
 
     def upgrade
       puts "-------   UPGRADING #{ @new_name } FROM RAILS 3.2 to RAILS 4   -------"
-
+        print "trying out hound"
       begin
         rename_old
         rails_gen_new
