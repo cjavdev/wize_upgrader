@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'wize_upgrader'
-  s.version     = '0.0.5'
+  s.version     = '0.0.6'
   s.date        = '2014-02-19'
   s.summary     = 'Upgrades rails apps from 3.2 to 4'
   s.description = 'Simple upgrade by copying over files and folders'
